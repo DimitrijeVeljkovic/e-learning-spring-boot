@@ -1,8 +1,8 @@
 package com.dveljkovic.elearning.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,6 +28,10 @@ public class Course {
 
     @OneToMany(mappedBy = "course", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "course", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @JsonIgnore
+    private List<LearningPathCourse> lpCourses;
 
     public Course() {
 
@@ -85,5 +89,13 @@ public class Course {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<LearningPathCourse> getLpCourses() {
+        return lpCourses;
+    }
+
+    public void setLpCourses(List<LearningPathCourse> lpCourses) {
+        this.lpCourses = lpCourses;
     }
 }
