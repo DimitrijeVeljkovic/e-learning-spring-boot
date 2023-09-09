@@ -1,15 +1,18 @@
 package com.dveljkovic.elearning.dao;
 
 import com.dveljkovic.elearning.auth.JwtTokenProvider;
+import com.dveljkovic.elearning.entity.Bookmark;
 import com.dveljkovic.elearning.entity.User;
 import com.dveljkovic.elearning.helpers.LoginPayload;
 import com.dveljkovic.elearning.helpers.LoginResponse;
 import com.dveljkovic.elearning.helpers.SignupResponse;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Objects;
 
 @Repository
@@ -42,5 +45,15 @@ public class UserDAOImplementation implements UserDAO {
         }
 
         throw new AuthenticationException("Auth failed! Password incorrect!");
+    }
+
+    @Override
+    public List<Bookmark> getAllBookmarks(int userId) {
+        TypedQuery<Bookmark> query = entityManager.createQuery("SELECT b FROM Bookmark b WHERE b.user.id = :userId", Bookmark.class);
+        query.setParameter("userId", userId);
+
+        List<Bookmark> bookmarks = query.getResultList();
+
+        return bookmarks;
     }
 }

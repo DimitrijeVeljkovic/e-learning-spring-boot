@@ -1,5 +1,7 @@
 package com.dveljkovic.elearning.auth;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -16,5 +18,18 @@ public class JwtTokenProvider {
                 .claim("userId", userId)
                 .signWith(SECRET_KEY)
                 .compact();
+    }
+
+    public static boolean isTokenValid(String token) {
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(SECRET_KEY)
+                    .build()
+                    .parseClaimsJws(token);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

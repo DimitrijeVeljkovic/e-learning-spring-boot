@@ -3,13 +3,11 @@ package com.dveljkovic.elearning.dao;
 import com.dveljkovic.elearning.entity.Course;
 import com.dveljkovic.elearning.helpers.Counts;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class CourseDAOImplementation implements CourseDAO {
@@ -24,10 +22,7 @@ public class CourseDAOImplementation implements CourseDAO {
 
     @Override
     public List<Course> findAll() {
-        TypedQuery<Course> query = entityManager.createQuery(
-                "from Course",
-                Course.class
-        );
+        TypedQuery<Course> query = entityManager.createQuery("from Course", Course.class);
 
         List<Course> courses = query.getResultList();
 

@@ -1,6 +1,7 @@
 package com.dveljkovic.elearning.service;
 
 import com.dveljkovic.elearning.dao.UserDAO;
+import com.dveljkovic.elearning.entity.Bookmark;
 import com.dveljkovic.elearning.entity.User;
 import com.dveljkovic.elearning.helpers.LoginPayload;
 import com.dveljkovic.elearning.helpers.LoginResponse;
@@ -9,6 +10,8 @@ import jakarta.transaction.Transactional;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImplementation implements UserService {
@@ -29,5 +32,10 @@ public class UserServiceImplementation implements UserService {
     @Override
     public LoginResponse findUser(LoginPayload login) throws AuthenticationException {
         return userDAO.findUser(login);
+    }
+
+    @Override
+    public List<Bookmark> getAllBookmarks(int userId) {
+        return userDAO.getAllBookmarks(userId);
     }
 }

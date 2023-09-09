@@ -1,6 +1,5 @@
 package com.dveljkovic.elearning.rest;
 
-import com.dveljkovic.elearning.dao.CourseDAO;
 import com.dveljkovic.elearning.entity.Course;
 import com.dveljkovic.elearning.helpers.Counts;
 import com.dveljkovic.elearning.service.CourseService;

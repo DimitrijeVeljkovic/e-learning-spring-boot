@@ -33,6 +33,10 @@ public class Course {
     @JsonIgnore
     private List<LearningPathCourse> lpCourses;
 
+    @OneToMany(mappedBy = "course", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @JsonIgnore
+    private List<Bookmark> bookmarks;
+
     public Course() {
 
     }
@@ -97,5 +101,13 @@ public class Course {
 
     public void setLpCourses(List<LearningPathCourse> lpCourses) {
         this.lpCourses = lpCourses;
+    }
+
+    public List<Bookmark> getBookmarks() {
+        return bookmarks;
+    }
+
+    public void setBookmarks(List<Bookmark> bookmarks) {
+        this.bookmarks = bookmarks;
     }
 }

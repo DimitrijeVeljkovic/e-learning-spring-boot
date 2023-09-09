@@ -1,5 +1,7 @@
 package com.dveljkovic.elearning.rest;
 
+import com.dveljkovic.elearning.auth.JwtTokenProvider;
+import com.dveljkovic.elearning.entity.Bookmark;
 import com.dveljkovic.elearning.entity.User;
 import com.dveljkovic.elearning.helpers.LoginPayload;
 import com.dveljkovic.elearning.helpers.LoginResponse;
@@ -9,9 +11,11 @@ import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "*", methods = {RequestMethod.POST})
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET})
 public class UserRestController {
 
     private UserService userService;
@@ -29,5 +33,14 @@ public class UserRestController {
     @PostMapping("/login")
     public LoginResponse findUser(@RequestBody LoginPayload login) throws AuthenticationException {
         return userService.findUser(login);
+    }
+
+    @GetMapping("/{userId}/bookmarked-courses")
+    public List<Bookmark> getAllBookmarks(@RequestHeader("Authorization") String token, @PathVariable int userId) throws AuthenticationException {
+        if (JwtTokenProvider.isTokenValid(token)) {
+            return userService.getAllBookmarks(userId);
+        }
+
+        throw new AuthenticationException("Auth failed! Token required!");
     }
 }
