@@ -1,8 +1,14 @@
 package com.dveljkovic.elearning.dao;
 
+import com.dveljkovic.elearning.entity.Comment;
 import com.dveljkovic.elearning.entity.Course;
+import com.dveljkovic.elearning.entity.Rating;
+import com.dveljkovic.elearning.entity.User;
+import com.dveljkovic.elearning.helpers.CommentPayload;
 import com.dveljkovic.elearning.helpers.Counts;
+import com.dveljkovic.elearning.helpers.RatingPayload;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -52,5 +58,33 @@ public class CourseDAOImplementation implements CourseDAO {
                 .setParameter("userId", userId)
                 .getSingleResult();
         return new Counts(courseCount, learningPathCount, inProgressCount, bookmarkCount, completeCount);
+    }
+
+    @Override
+    public Comment postComment(int courseId, CommentPayload comment) {
+        Query query = entityManager.createNativeQuery("INSERT INTO comment (user_id, course_id, comment) VALUES (:userId, :courseId, :comment)");
+        query.setParameter("userId", comment.getUserId());
+        query.setParameter("courseId", courseId);
+        query.setParameter("comment", comment.getComment());
+        query.executeUpdate();
+
+        User u = entityManager.find(User.class, comment.getUserId());
+        Comment c = new Comment(comment.getComment());
+        c.setUser(u);
+
+        return c;
+    }
+
+    @Override
+    public Rating postRating(int courseId, RatingPayload rating) {
+        Query query = entityManager.createNativeQuery("INSERT INTO rating (user_id, course_id, rating) VALUES (:userId, :courseId, :rating)");
+        query.setParameter("userId", rating.getUserId());
+        query.setParameter("courseId", courseId);
+        query.setParameter("rating", rating.getRating());
+        query.executeUpdate();
+
+        Rating r = new Rating(rating.getRating());
+
+        return r;
     }
 }

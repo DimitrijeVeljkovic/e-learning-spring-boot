@@ -1,8 +1,13 @@
 package com.dveljkovic.elearning.service;
 
 import com.dveljkovic.elearning.dao.CourseDAO;
+import com.dveljkovic.elearning.entity.Comment;
 import com.dveljkovic.elearning.entity.Course;
+import com.dveljkovic.elearning.entity.Rating;
+import com.dveljkovic.elearning.helpers.CommentPayload;
 import com.dveljkovic.elearning.helpers.Counts;
+import com.dveljkovic.elearning.helpers.RatingPayload;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +34,17 @@ public class CourseServiceImplementation implements CourseService {
     @Override
     public Counts getNumberOfCoursesForUser(Long userId) {
         return courseDAO.getNumberOfCoursesForUser(userId);
+    }
+
+    @Transactional
+    @Override
+    public Comment postComment(int courseId, CommentPayload comment) {
+        return courseDAO.postComment(courseId, comment);
+    }
+
+    @Transactional
+    @Override
+    public Rating postRating(int courseId, RatingPayload rating) {
+        return courseDAO.postRating(courseId, rating);
     }
 }
