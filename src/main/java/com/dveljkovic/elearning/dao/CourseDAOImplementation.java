@@ -45,6 +45,7 @@ public class CourseDAOImplementation implements CourseDAO {
     public Counts getNumberOfCoursesForUser(Long userId) {
         long courseCount = (long) entityManager.createQuery("SELECT COUNT(c) FROM Course c").getSingleResult();
         long learningPathCount = (long) entityManager.createQuery("SELECT COUNT(lp) FROM LearningPath lp").getSingleResult();
+        // toDo: get 3 other counts
         return new Counts(courseCount, learningPathCount, 0, 0, 0);
     }
 }

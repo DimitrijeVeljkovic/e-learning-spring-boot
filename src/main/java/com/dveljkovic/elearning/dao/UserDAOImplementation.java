@@ -1,10 +1,16 @@
 package com.dveljkovic.elearning.dao;
 
+import com.dveljkovic.elearning.auth.JwtTokenProvider;
 import com.dveljkovic.elearning.entity.User;
+import com.dveljkovic.elearning.helpers.LoginPayload;
+import com.dveljkovic.elearning.helpers.LoginResponse;
 import com.dveljkovic.elearning.helpers.SignupResponse;
 import jakarta.persistence.EntityManager;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.Objects;
 
 @Repository
 public class UserDAOImplementation implements UserDAO {
@@ -19,5 +25,22 @@ public class UserDAOImplementation implements UserDAO {
     public SignupResponse createUser(User user) {
         User u = entityManager.merge(user);
         return new SignupResponse("User created successfully!", u);
+    }
+
+    @Override
+    public LoginResponse findUser(LoginPayload login) throws AuthenticationException {
+        String email = login.getEmail();
+        String q = "SELECT u FROM User u WHERE u.email = :email";
+        User u = entityManager.createQuery(q, User.class)
+                .setParameter("email", email)
+                .getSingleResult();
+
+        if (u != null && Objects.equals(u.getPassword(), login.getPassword())) {
+            String token = JwtTokenProvider.generateToken(u.getEmail(), u.getUserId());
+
+            return new LoginResponse(token, u);
+        }
+
+        throw new AuthenticationException("Auth failed! Password incorrect!");
     }
 }
