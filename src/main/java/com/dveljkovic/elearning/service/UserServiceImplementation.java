@@ -2,6 +2,7 @@ package com.dveljkovic.elearning.service;
 
 import com.dveljkovic.elearning.dao.UserDAO;
 import com.dveljkovic.elearning.entity.Bookmark;
+import com.dveljkovic.elearning.entity.InProgress;
 import com.dveljkovic.elearning.entity.User;
 import com.dveljkovic.elearning.helpers.LoginPayload;
 import com.dveljkovic.elearning.helpers.LoginResponse;
@@ -37,5 +38,10 @@ public class UserServiceImplementation implements UserService {
     @Override
     public List<Bookmark> getAllBookmarks(int userId) {
         return userDAO.getAllBookmarks(userId);
+    }
+
+    @Override
+    public List<InProgress> getAllInProgress(int userId) {
+        return userDAO.getAllInProgress(userId);
     }
 }

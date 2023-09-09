@@ -37,6 +37,10 @@ public class Course {
     @JsonIgnore
     private List<Bookmark> bookmarks;
 
+    @OneToMany(mappedBy = "course", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @JsonIgnore
+    private List<InProgress> inProgressCourses;
+
     public Course() {
 
     }
@@ -109,5 +113,13 @@ public class Course {
 
     public void setBookmarks(List<Bookmark> bookmarks) {
         this.bookmarks = bookmarks;
+    }
+
+    public List<InProgress> getInProgressCourses() {
+        return inProgressCourses;
+    }
+
+    public void setInProgressCourses(List<InProgress> inProgressCourses) {
+        this.inProgressCourses = inProgressCourses;
     }
 }
