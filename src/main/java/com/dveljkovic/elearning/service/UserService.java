@@ -22,7 +22,11 @@ public interface UserService {
 
     User getUser(int userId);
 
-    StartBookmarkResponse startCourse(int userId, StartBookmarkPayload p) throws Exception;
+    MessageResponse startCourse(int userId, StartBookmarkPayload p) throws Exception;
 
-    StartBookmarkResponse bookmarkCourse(int userId, StartBookmarkPayload p);
+    MessageResponse bookmarkCourse(int userId, StartBookmarkPayload p);
+
+    UpdateUserResponse changeUserData(int userId, User user);
+
+    MessageResponse deleteUser(int userId);
 }

@@ -15,7 +15,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET})
+@CrossOrigin(origins = "*", methods = {
+        RequestMethod.POST,
+        RequestMethod.GET,
+        RequestMethod.PUT,
+        RequestMethod.DELETE
+})
 public class UserRestController {
 
     private UserService userService;
@@ -72,7 +77,7 @@ public class UserRestController {
     }
 
     @PostMapping("/{userId}/start-course")
-    public StartBookmarkResponse startCourse(
+    public MessageResponse startCourse(
             @RequestHeader("Authorization") String token,
             @PathVariable int userId,
             @RequestBody StartBookmarkPayload p) throws Exception {
@@ -84,12 +89,36 @@ public class UserRestController {
     }
 
     @PostMapping("/{userId}/bookmark-course")
-    public StartBookmarkResponse bookmarkCourse(
+    public MessageResponse bookmarkCourse(
             @RequestHeader("Authorization") String token,
             @PathVariable int userId,
             @RequestBody StartBookmarkPayload p) throws AuthenticationException {
         if (JwtTokenProvider.isTokenValid(token)) {
             return userService.bookmarkCourse(userId, p);
+        }
+
+        throw new AuthenticationException("Auth failed! Token required!");
+    }
+
+    @PutMapping("/{userId}/change")
+    public UpdateUserResponse changeUserData(
+            @RequestHeader("Authorization") String token,
+            @PathVariable int userId,
+            @RequestBody User user) throws AuthenticationException {
+        if (JwtTokenProvider.isTokenValid(token)) {
+            return userService.changeUserData(userId, user);
+        }
+
+        throw new AuthenticationException("Auth failed! Token required!");
+    }
+
+    @DeleteMapping("/{userId}/delete")
+    public MessageResponse deleteUser(
+            @RequestHeader("Authorization") String token,
+            @PathVariable int userId
+    ) throws AuthenticationException {
+        if (JwtTokenProvider.isTokenValid(token)) {
+            return userService.deleteUser(userId);
         }
 
         throw new AuthenticationException("Auth failed! Token required!");

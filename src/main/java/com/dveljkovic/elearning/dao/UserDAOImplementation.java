@@ -81,7 +81,7 @@ public class UserDAOImplementation implements UserDAO {
     }
 
     @Override
-    public StartBookmarkResponse startCourse(int userId, StartBookmarkPayload p) throws Exception {
+    public MessageResponse startCourse(int userId, StartBookmarkPayload p) throws Exception {
         Query query = entityManager.createNativeQuery("INSERT INTO in_progress (user_id, course_id) VALUES (:userId, :courseId)");
         query.setParameter("userId", userId);
         query.setParameter("courseId", p.getCourseId());
@@ -97,19 +97,33 @@ public class UserDAOImplementation implements UserDAO {
 
         if (c == null) {
             query.executeUpdate();
-            return new StartBookmarkResponse("Course started successfully!");
+            return new MessageResponse("Course started successfully!");
         }
 
         throw new Exception("Cannot start course! Already finished!");
     }
 
     @Override
-    public StartBookmarkResponse bookmarkCourse(int userId, StartBookmarkPayload p) {
+    public MessageResponse bookmarkCourse(int userId, StartBookmarkPayload p) {
         Query query = entityManager.createNativeQuery("INSERT INTO bookmark (user_id, course_id) VALUES (:userId, :courseId)");
         query.setParameter("userId", userId);
         query.setParameter("courseId", p.getCourseId());
         query.executeUpdate();
 
-        return new StartBookmarkResponse("Course bookmarked successfully!");
+        return new MessageResponse("Course bookmarked successfully!");
+    }
+
+    @Override
+    public UpdateUserResponse changeUserData(int userId, User user) {
+        user.setUserId(userId);
+        User u = entityManager.merge(user);
+        return new UpdateUserResponse("Data changed successfully!", u);
+    }
+
+    @Override
+    public MessageResponse deleteUser(int userId) {
+        User u = entityManager.find(User.class, userId);
+        entityManager.remove(u);
+        return new MessageResponse("User deleted successfully!");
     }
 }

@@ -1,13 +1,13 @@
 package com.dveljkovic.elearning.helpers;
 
-public class StartBookmarkResponse {
+public class MessageResponse {
     private String message;
 
-    public StartBookmarkResponse() {
+    public MessageResponse() {
 
     }
 
-    public StartBookmarkResponse(String message) {
+    public MessageResponse(String message) {
         this.message = message;
     }
 

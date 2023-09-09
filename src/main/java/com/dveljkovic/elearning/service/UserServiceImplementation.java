@@ -56,13 +56,25 @@ public class UserServiceImplementation implements UserService {
 
     @Transactional
     @Override
-    public StartBookmarkResponse startCourse(int userId, StartBookmarkPayload p) throws Exception {
+    public MessageResponse startCourse(int userId, StartBookmarkPayload p) throws Exception {
         return userDAO.startCourse(userId, p);
     }
 
     @Transactional
     @Override
-    public StartBookmarkResponse bookmarkCourse(int userId, StartBookmarkPayload p) {
+    public MessageResponse bookmarkCourse(int userId, StartBookmarkPayload p) {
         return userDAO.bookmarkCourse(userId, p);
+    }
+
+    @Transactional
+    @Override
+    public UpdateUserResponse changeUserData(int userId, User user) {
+        return userDAO.changeUserData(userId, user);
+    }
+
+    @Transactional
+    @Override
+    public MessageResponse deleteUser(int userId) {
+        return userDAO.deleteUser(userId);
     }
 }

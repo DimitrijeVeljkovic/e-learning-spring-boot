@@ -31,19 +31,19 @@ public class User {
     @Column(name="verification_code")
     private String verificationCode;
 
-    @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @OneToMany(mappedBy = "user", cascade = { CascadeType.ALL }, orphanRemoval = true)
     @JsonIgnore
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @OneToMany(mappedBy = "user", cascade = { CascadeType.ALL }, orphanRemoval = true)
     @JsonIgnore
     private List<Bookmark> bookmarks;
 
-    @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @OneToMany(mappedBy = "user", cascade = { CascadeType.ALL }, orphanRemoval = true)
     @JsonIgnore
     private List<InProgress> inProgressCourses;
 
-    @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @OneToMany(mappedBy = "user", cascade = { CascadeType.ALL }, orphanRemoval = true)
     @JsonIgnore
     private List<Completed> completedCourses;
 
