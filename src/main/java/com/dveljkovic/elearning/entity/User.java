@@ -43,6 +43,10 @@ public class User {
     @JsonIgnore
     private List<InProgress> inProgressCourses;
 
+    @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @JsonIgnore
+    private List<Completed> completedCourses;
+
     public User() {
 
     }
@@ -134,6 +138,14 @@ public class User {
 
     public void setInProgressCourses(List<InProgress> inProgressCourses) {
         this.inProgressCourses = inProgressCourses;
+    }
+
+    public List<Completed> getCompletedCourses() {
+        return completedCourses;
+    }
+
+    public void setCompletedCourses(List<Completed> completedCourses) {
+        this.completedCourses = completedCourses;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.dveljkovic.elearning.service;
 
 import com.dveljkovic.elearning.entity.Bookmark;
+import com.dveljkovic.elearning.entity.Completed;
 import com.dveljkovic.elearning.entity.InProgress;
 import com.dveljkovic.elearning.entity.User;
 import com.dveljkovic.elearning.helpers.LoginPayload;
@@ -18,4 +19,6 @@ public interface UserService {
     List<Bookmark> getAllBookmarks(int userId);
 
     List<InProgress> getAllInProgress(int userId);
+
+    List<Completed> getAllCompleted(int userId);
 }

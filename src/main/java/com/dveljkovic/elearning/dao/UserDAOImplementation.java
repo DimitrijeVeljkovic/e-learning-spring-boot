@@ -2,6 +2,7 @@ package com.dveljkovic.elearning.dao;
 
 import com.dveljkovic.elearning.auth.JwtTokenProvider;
 import com.dveljkovic.elearning.entity.Bookmark;
+import com.dveljkovic.elearning.entity.Completed;
 import com.dveljkovic.elearning.entity.InProgress;
 import com.dveljkovic.elearning.entity.User;
 import com.dveljkovic.elearning.helpers.LoginPayload;
@@ -66,5 +67,15 @@ public class UserDAOImplementation implements UserDAO {
         List<InProgress> inProgressCourses = query.getResultList();
 
         return inProgressCourses;
+    }
+
+    @Override
+    public List<Completed> getAllCompleted(int userId) {
+        TypedQuery<Completed> query = entityManager.createQuery("SELECT c FROM Completed c WHERE c.user.id = :userId", Completed.class);
+        query.setParameter("userId", userId);
+
+        List<Completed> completedCourses = query.getResultList();
+
+        return completedCourses;
     }
 }

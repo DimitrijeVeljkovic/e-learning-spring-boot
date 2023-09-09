@@ -2,6 +2,7 @@ package com.dveljkovic.elearning.rest;
 
 import com.dveljkovic.elearning.auth.JwtTokenProvider;
 import com.dveljkovic.elearning.entity.Bookmark;
+import com.dveljkovic.elearning.entity.Completed;
 import com.dveljkovic.elearning.entity.InProgress;
 import com.dveljkovic.elearning.entity.User;
 import com.dveljkovic.elearning.helpers.LoginPayload;
@@ -49,6 +50,15 @@ public class UserRestController {
     public List<InProgress> getAllInProgress(@RequestHeader("Authorization") String token, @PathVariable int userId) throws AuthenticationException {
         if (JwtTokenProvider.isTokenValid(token)) {
             return userService.getAllInProgress(userId);
+        }
+
+        throw new AuthenticationException("Auth failed! Token required!");
+    }
+
+    @GetMapping("/{userId}/finished-courses")
+    public List<Completed> getAllCompleted(@RequestHeader("Authorization") String token, @PathVariable int userId) throws AuthenticationException {
+        if (JwtTokenProvider.isTokenValid(token)) {
+            return userService.getAllCompleted(userId);
         }
 
         throw new AuthenticationException("Auth failed! Token required!");
