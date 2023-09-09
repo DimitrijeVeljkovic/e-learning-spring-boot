@@ -21,4 +21,6 @@ public interface UserDAO {
     List<InProgress> getAllInProgress(int userId);
 
     List<Completed> getAllCompleted(int userId);
+
+    User getUser(int userId);
 }

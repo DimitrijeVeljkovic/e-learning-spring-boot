@@ -37,6 +37,15 @@ public class UserRestController {
         return userService.findUser(login);
     }
 
+    @GetMapping("/{userId}")
+    public User getUser(@RequestHeader("Authorization") String token, @PathVariable int userId) throws AuthenticationException {
+        if (JwtTokenProvider.isTokenValid(token)) {
+            return userService.getUser(userId);
+        }
+
+        throw new AuthenticationException("Auth failed! Token required!");
+    }
+
     @GetMapping("/{userId}/bookmarked-courses")
     public List<Bookmark> getAllBookmarks(@RequestHeader("Authorization") String token, @PathVariable int userId) throws AuthenticationException {
         if (JwtTokenProvider.isTokenValid(token)) {

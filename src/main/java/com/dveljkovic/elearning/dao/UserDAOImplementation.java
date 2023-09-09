@@ -78,4 +78,9 @@ public class UserDAOImplementation implements UserDAO {
 
         return completedCourses;
     }
+
+    @Override
+    public User getUser(int userId) {
+        return entityManager.find(User.class, userId);
+    }
 }

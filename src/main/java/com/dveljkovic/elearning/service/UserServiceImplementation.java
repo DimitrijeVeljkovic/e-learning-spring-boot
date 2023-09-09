@@ -50,4 +50,9 @@ public class UserServiceImplementation implements UserService {
     public List<Completed> getAllCompleted(int userId) {
         return userDAO.getAllCompleted(userId);
     }
+
+    @Override
+    public User getUser(int userId) {
+        return userDAO.getUser(userId);
+    }
 }
