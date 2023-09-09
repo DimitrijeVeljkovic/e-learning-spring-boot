@@ -51,7 +51,7 @@ public class UserDAOImplementation implements UserDAO {
 
     @Override
     public List<Bookmark> getAllBookmarks(int userId) {
-        TypedQuery<Bookmark> query = entityManager.createQuery("SELECT b FROM Bookmark b WHERE b.user.id = :userId", Bookmark.class);
+        TypedQuery<Bookmark> query = entityManager.createQuery("SELECT b FROM Bookmark b WHERE b.user.userId = :userId", Bookmark.class);
         query.setParameter("userId", userId);
 
         List<Bookmark> bookmarks = query.getResultList();
@@ -61,7 +61,7 @@ public class UserDAOImplementation implements UserDAO {
 
     @Override
     public List<InProgress> getAllInProgress(int userId) {
-        TypedQuery<InProgress> query = entityManager.createQuery("SELECT i FROM InProgress i WHERE i.user.id = :userId", InProgress.class);
+        TypedQuery<InProgress> query = entityManager.createQuery("SELECT i FROM InProgress i WHERE i.user.userId = :userId", InProgress.class);
         query.setParameter("userId", userId);
 
         List<InProgress> inProgressCourses = query.getResultList();
@@ -71,7 +71,7 @@ public class UserDAOImplementation implements UserDAO {
 
     @Override
     public List<Completed> getAllCompleted(int userId) {
-        TypedQuery<Completed> query = entityManager.createQuery("SELECT c FROM Completed c WHERE c.user.id = :userId", Completed.class);
+        TypedQuery<Completed> query = entityManager.createQuery("SELECT c FROM Completed c WHERE c.user.userId = :userId", Completed.class);
         query.setParameter("userId", userId);
 
         List<Completed> completedCourses = query.getResultList();

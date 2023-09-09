@@ -38,9 +38,19 @@ public class CourseDAOImplementation implements CourseDAO {
 
     @Override
     public Counts getNumberOfCoursesForUser(Long userId) {
-        long courseCount = (long) entityManager.createQuery("SELECT COUNT(c) FROM Course c").getSingleResult();
-        long learningPathCount = (long) entityManager.createQuery("SELECT COUNT(lp) FROM LearningPath lp").getSingleResult();
-        // toDo: get 3 other counts
-        return new Counts(courseCount, learningPathCount, 0, 0, 0);
+        long courseCount = (long) entityManager.createQuery("SELECT COUNT(*) FROM Course")
+                .getSingleResult();
+        long learningPathCount = (long) entityManager.createQuery("SELECT COUNT(*) FROM LearningPath")
+                .getSingleResult();
+        long inProgressCount = (long) entityManager.createQuery("SELECT COUNT(*) FROM InProgress WHERE user.userId = :userId")
+                .setParameter("userId", userId)
+                .getSingleResult();
+        long bookmarkCount = (long) entityManager.createQuery("SELECT COUNT(*) FROM Bookmark WHERE user.userId = :userId")
+                .setParameter("userId", userId)
+                .getSingleResult();
+        long completeCount = (long) entityManager.createQuery("SELECT COUNT(*) FROM Completed WHERE user.userId = :userId")
+                .setParameter("userId", userId)
+                .getSingleResult();
+        return new Counts(courseCount, learningPathCount, inProgressCount, bookmarkCount, completeCount);
     }
 }
