@@ -1,14 +1,10 @@
 package com.dveljkovic.elearning.dao;
 
 import com.dveljkovic.elearning.auth.JwtTokenProvider;
-import com.dveljkovic.elearning.entity.Bookmark;
-import com.dveljkovic.elearning.entity.Completed;
-import com.dveljkovic.elearning.entity.InProgress;
-import com.dveljkovic.elearning.entity.User;
-import com.dveljkovic.elearning.helpers.LoginPayload;
-import com.dveljkovic.elearning.helpers.LoginResponse;
-import com.dveljkovic.elearning.helpers.SignupResponse;
+import com.dveljkovic.elearning.entity.*;
+import com.dveljkovic.elearning.helpers.*;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +78,38 @@ public class UserDAOImplementation implements UserDAO {
     @Override
     public User getUser(int userId) {
         return entityManager.find(User.class, userId);
+    }
+
+    @Override
+    public StartBookmarkResponse startCourse(int userId, StartBookmarkPayload p) throws Exception {
+        Query query = entityManager.createNativeQuery("INSERT INTO in_progress (user_id, course_id) VALUES (:userId, :courseId)");
+        query.setParameter("userId", userId);
+        query.setParameter("courseId", p.getCourseId());
+
+        Completed cid = new Completed();
+        User user = new User();
+        user.setUserId(userId);
+        cid.setUser(user);
+        Course course = new Course();
+        course.setCourseId(p.getCourseId());
+        cid.setCourse(course);
+        Completed c = entityManager.find(Completed.class, cid);
+
+        if (c == null) {
+            query.executeUpdate();
+            return new StartBookmarkResponse("Course started successfully!");
+        }
+
+        throw new Exception("Cannot start course! Already finished!");
+    }
+
+    @Override
+    public StartBookmarkResponse bookmarkCourse(int userId, StartBookmarkPayload p) {
+        Query query = entityManager.createNativeQuery("INSERT INTO bookmark (user_id, course_id) VALUES (:userId, :courseId)");
+        query.setParameter("userId", userId);
+        query.setParameter("courseId", p.getCourseId());
+        query.executeUpdate();
+
+        return new StartBookmarkResponse("Course bookmarked successfully!");
     }
 }

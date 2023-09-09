@@ -5,9 +5,7 @@ import com.dveljkovic.elearning.entity.Bookmark;
 import com.dveljkovic.elearning.entity.Completed;
 import com.dveljkovic.elearning.entity.InProgress;
 import com.dveljkovic.elearning.entity.User;
-import com.dveljkovic.elearning.helpers.LoginPayload;
-import com.dveljkovic.elearning.helpers.LoginResponse;
-import com.dveljkovic.elearning.helpers.SignupResponse;
+import com.dveljkovic.elearning.helpers.*;
 import jakarta.transaction.Transactional;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +52,17 @@ public class UserServiceImplementation implements UserService {
     @Override
     public User getUser(int userId) {
         return userDAO.getUser(userId);
+    }
+
+    @Transactional
+    @Override
+    public StartBookmarkResponse startCourse(int userId, StartBookmarkPayload p) throws Exception {
+        return userDAO.startCourse(userId, p);
+    }
+
+    @Transactional
+    @Override
+    public StartBookmarkResponse bookmarkCourse(int userId, StartBookmarkPayload p) {
+        return userDAO.bookmarkCourse(userId, p);
     }
 }
