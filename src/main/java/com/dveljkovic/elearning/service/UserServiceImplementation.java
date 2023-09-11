@@ -77,4 +77,10 @@ public class UserServiceImplementation implements UserService {
     public MessageResponse deleteUser(int userId) {
         return userDAO.deleteUser(userId);
     }
+
+    @Transactional
+    @Override
+    public NoteResponse addNoteForUser(int userId, int courseId, NotePayload note) {
+        return userDAO.addNoteForUser(userId, courseId, note);
+    }
 }

@@ -29,4 +29,6 @@ public interface UserService {
     UpdateUserResponse changeUserData(int userId, User user);
 
     MessageResponse deleteUser(int userId);
+
+    NoteResponse addNoteForUser(int userId, int courseId, NotePayload note);
 }

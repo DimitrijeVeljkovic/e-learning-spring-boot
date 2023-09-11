@@ -126,4 +126,13 @@ public class UserDAOImplementation implements UserDAO {
         entityManager.remove(u);
         return new MessageResponse("User deleted successfully!");
     }
+
+    @Override
+    public NoteResponse addNoteForUser(int userId, int courseId, NotePayload note) {
+        Query query = entityManager.createNativeQuery("INSERT INTO note (note, course_id, user_id) VALUES (:note, :courseId, :userId)");
+        query.setParameter("note", note.getNewNote());
+        query.setParameter("courseId", courseId);
+        query.setParameter("userId", userId);
+        return new NoteResponse("Note added successfully!", note.getNewNote());
+    }
 }
