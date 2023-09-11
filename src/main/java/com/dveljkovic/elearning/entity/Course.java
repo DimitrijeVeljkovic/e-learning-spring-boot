@@ -45,6 +45,9 @@ public class Course {
     @JsonIgnore
     private List<Completed> completedCourses;
 
+    @OneToMany(mappedBy = "course", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    private List<Section> sections;
+
     public Course() {
 
     }
@@ -133,5 +136,13 @@ public class Course {
 
     public void setCompletedCourses(List<Completed> completedCourses) {
         this.completedCourses = completedCourses;
+    }
+
+    public List<Section> getSections() {
+        return sections;
+    }
+
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
     }
 }
