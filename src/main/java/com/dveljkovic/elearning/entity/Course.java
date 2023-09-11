@@ -48,6 +48,9 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     private List<Section> sections;
 
+    @OneToMany(mappedBy = "course", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    private List<Question> questions;
+
     public Course() {
 
     }
@@ -144,5 +147,13 @@ public class Course {
 
     public void setSections(List<Section> sections) {
         this.sections = sections;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 }

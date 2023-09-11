@@ -83,4 +83,10 @@ public class UserServiceImplementation implements UserService {
     public NoteResponse addNoteForUser(int userId, int courseId, NotePayload note) {
         return userDAO.addNoteForUser(userId, courseId, note);
     }
+
+    @Transactional
+    @Override
+    public MessageResponse submitTest(int userId, int courseId, List<QuestionAnswer> body) throws Exception {
+        return userDAO.submitTest(userId, courseId, body);
+    }
 }

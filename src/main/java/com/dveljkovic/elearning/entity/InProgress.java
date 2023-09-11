@@ -20,7 +20,7 @@ public class InProgress {
     @JoinColumn(name="course_id")
     private Course course;
 
-    @OneToMany(mappedBy = "inProgress", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @OneToMany(mappedBy = "inProgress", cascade = { CascadeType.ALL }, orphanRemoval = true)
     private List<Note> notes;
 
     public InProgress() {
