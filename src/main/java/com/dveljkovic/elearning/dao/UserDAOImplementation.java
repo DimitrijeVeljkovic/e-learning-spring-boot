@@ -116,9 +116,19 @@ public class UserDAOImplementation implements UserDAO {
 
     @Override
     public UpdateUserResponse changeUserData(int userId, User user) {
-        user.setUserId(userId);
-        User u = entityManager.merge(user);
-        return new UpdateUserResponse("Data changed successfully!", u);
+        User existingUser = entityManager.find(User.class, userId);
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setPassword(user.getPassword());
+        existingUser.setUserName(user.getUserName());
+        existingUser.setBookmarks(existingUser.getBookmarks());
+        existingUser.setInProgressCourses(existingUser.getInProgressCourses());
+        existingUser.setCompletedCourses(existingUser.getCompletedCourses());
+        existingUser.setComments(existingUser.getComments());
+        entityManager.merge(existingUser);
+
+        return new UpdateUserResponse("Data changed successfully!", user);
     }
 
     @Override
