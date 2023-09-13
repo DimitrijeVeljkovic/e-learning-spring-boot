@@ -28,9 +28,6 @@ public class User {
     @Column(name="password")
     private String password;
 
-    @Column(name="verification_code")
-    private String verificationCode;
-
     @OneToMany(mappedBy = "user", cascade = { CascadeType.ALL }, orphanRemoval = true)
     @JsonIgnore
     private List<Comment> comments;
@@ -51,13 +48,12 @@ public class User {
 
     }
 
-    public User(String firstName, String lastName, String userName, String email, String password, String verificationCode) {
+    public User(String firstName, String lastName, String userName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
         this.email = email;
         this.password = password;
-        this.verificationCode = verificationCode;
     }
 
     public int getUserId() {
@@ -108,14 +104,6 @@ public class User {
         this.password = password;
     }
 
-    public String getVerificationCode() {
-        return verificationCode;
-    }
-
-    public void setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
-    }
-
     public List<Comment> getComments() {
         return comments;
     }
@@ -157,7 +145,6 @@ public class User {
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", verificationCode='" + verificationCode + '\'' +
                 ", comments=" + comments +
                 '}';
     }
