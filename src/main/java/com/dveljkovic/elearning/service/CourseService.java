@@ -17,4 +17,6 @@ public interface CourseService {
     Comment postComment(int courseId, CommentPayload comment);
 
     Rating postRating(int courseId, RatingPayload rating);
+
+    Rating getUserRatingForCourse(int courseId, Long userId);
 }

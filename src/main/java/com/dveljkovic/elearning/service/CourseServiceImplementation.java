@@ -47,4 +47,9 @@ public class CourseServiceImplementation implements CourseService {
     public Rating postRating(int courseId, RatingPayload rating) {
         return courseDAO.postRating(courseId, rating);
     }
+
+    @Override
+    public Rating getUserRatingForCourse(int courseId, Long userId) {
+        return courseDAO.getUserRatingForCourse(courseId, userId);
+    }
 }
