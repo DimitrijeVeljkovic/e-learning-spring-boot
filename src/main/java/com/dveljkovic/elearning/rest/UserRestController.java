@@ -44,7 +44,7 @@ public class UserRestController {
         throw new AuthenticationException("Auth failed! Token required!");
     }
 
-    @PutMapping("/{userId}/change")
+    @PutMapping("/{userId}")
     public UpdateUserResponse changeUserData(
             @RequestHeader("Authorization") String token,
             @PathVariable int userId,
@@ -56,7 +56,7 @@ public class UserRestController {
         throw new AuthenticationException("Auth failed! Token required!");
     }
 
-    @DeleteMapping("/{userId}/delete")
+    @DeleteMapping("/{userId}")
     public MessageResponse deleteUser(
             @RequestHeader("Authorization") String token,
             @PathVariable int userId
