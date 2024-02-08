@@ -30,7 +30,5 @@ public interface UserDAO {
 
     MessageResponse deleteUser(int userId);
 
-    NoteResponse addNoteForUser(int userId, int courseId, NotePayload note);
-
     MessageResponse submitTest(int userId, int courseId, List<QuestionAnswer> body) throws Exception;
 }

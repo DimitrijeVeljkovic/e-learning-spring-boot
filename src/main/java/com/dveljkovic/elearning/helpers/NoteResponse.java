@@ -1,14 +1,16 @@
 package com.dveljkovic.elearning.helpers;
 
+import com.dveljkovic.elearning.entity.Note;
+
 public class NoteResponse {
     private String message;
-    private String note;
+    private Note note;
 
     public NoteResponse() {
 
     }
 
-    public NoteResponse(String message, String note) {
+    public NoteResponse(String message, Note note) {
         this.message = message;
         this.note = note;
     }
@@ -21,11 +23,11 @@ public class NoteResponse {
         this.message = message;
     }
 
-    public String getNote() {
+    public Note getNote() {
         return note;
     }
 
-    public void setNote(String note) {
+    public void setNote(Note note) {
         this.note = note;
     }
 }

@@ -139,16 +139,6 @@ public class UserDAOImplementation implements UserDAO {
     }
 
     @Override
-    public NoteResponse addNoteForUser(int userId, int courseId, NotePayload note) {
-        Query query = entityManager.createNativeQuery("INSERT INTO note (note, course_id, user_id) VALUES (:note, :courseId, :userId)");
-        query.setParameter("note", note.getNewNote());
-        query.setParameter("courseId", courseId);
-        query.setParameter("userId", userId);
-        query.executeUpdate();
-        return new NoteResponse("Note added successfully!", note.getNewNote());
-    }
-
-    @Override
     public MessageResponse submitTest(int userId, int courseId, List<QuestionAnswer> body) throws Exception {
         int correctAnswers = 0;
         TypedQuery<Question> query = entityManager.createQuery("SELECT q FROM Question q WHERE q.course.courseId = :courseId", Question.class);
