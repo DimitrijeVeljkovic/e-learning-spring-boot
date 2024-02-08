@@ -1,12 +1,8 @@
 package com.dveljkovic.elearning.service;
 
 import com.dveljkovic.elearning.dao.CourseDAO;
-import com.dveljkovic.elearning.entity.Comment;
-import com.dveljkovic.elearning.entity.Course;
-import com.dveljkovic.elearning.entity.Rating;
-import com.dveljkovic.elearning.helpers.CommentPayload;
-import com.dveljkovic.elearning.helpers.Counts;
-import com.dveljkovic.elearning.helpers.RatingPayload;
+import com.dveljkovic.elearning.entity.*;
+import com.dveljkovic.elearning.helpers.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,5 +47,32 @@ public class CourseServiceImplementation implements CourseService {
     @Override
     public Rating getUserRatingForCourse(int courseId, Long userId) {
         return courseDAO.getUserRatingForCourse(courseId, userId);
+    }
+
+    @Override
+    public List<Bookmark> getAllBookmarks(int userId) {
+        return courseDAO.getAllBookmarks(userId);
+    }
+
+    @Override
+    public List<InProgress> getAllInProgress(int userId) {
+        return courseDAO.getAllInProgress(userId);
+    }
+
+    @Override
+    public List<Completed> getAllCompleted(int userId) {
+        return courseDAO.getAllCompleted(userId);
+    }
+
+    @Transactional
+    @Override
+    public MessageResponse startCourse(int userId, StartBookmarkPayload p) throws Exception {
+        return courseDAO.startCourse(userId, p);
+    }
+
+    @Transactional
+    @Override
+    public MessageResponse bookmarkCourse(int userId, StartBookmarkPayload p) {
+        return courseDAO.bookmarkCourse(userId, p);
     }
 }

@@ -1,12 +1,7 @@
 package com.dveljkovic.elearning.dao;
 
-import com.dveljkovic.elearning.entity.Comment;
-import com.dveljkovic.elearning.entity.Course;
-import com.dveljkovic.elearning.entity.Rating;
-import com.dveljkovic.elearning.entity.User;
-import com.dveljkovic.elearning.helpers.CommentPayload;
-import com.dveljkovic.elearning.helpers.Counts;
-import com.dveljkovic.elearning.helpers.RatingPayload;
+import com.dveljkovic.elearning.entity.*;
+import com.dveljkovic.elearning.helpers.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
@@ -115,5 +110,62 @@ public class CourseDAOImplementation implements CourseDAO {
         }
 
         return new Rating((int) ratingToReturn);
+    }
+
+    @Override
+    public List<Bookmark> getAllBookmarks(int userId) {
+        TypedQuery<Bookmark> query = entityManager.createQuery("SELECT b FROM Bookmark b WHERE b.user.userId = :userId", Bookmark.class);
+        query.setParameter("userId", userId);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<InProgress> getAllInProgress(int userId) {
+        TypedQuery<InProgress> query = entityManager.createQuery("SELECT i FROM InProgress i WHERE i.user.userId = :userId", InProgress.class);
+        query.setParameter("userId", userId);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Completed> getAllCompleted(int userId) {
+        TypedQuery<Completed> query = entityManager.createQuery("SELECT c FROM Completed c WHERE c.user.userId = :userId", Completed.class);
+        query.setParameter("userId", userId);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public MessageResponse startCourse(int userId, StartBookmarkPayload p) throws Exception {
+        Query query = entityManager.createNativeQuery("INSERT INTO in_progress (user_id, course_id) VALUES (:userId, :courseId)");
+        query.setParameter("userId", userId);
+        query.setParameter("courseId", p.getCourseId());
+
+        Completed cid = new Completed();
+        User user = new User();
+        user.setUserId(userId);
+        cid.setUser(user);
+        Course course = new Course();
+        course.setCourseId(p.getCourseId());
+        cid.setCourse(course);
+        Completed c = entityManager.find(Completed.class, cid);
+
+        if (c == null) {
+            query.executeUpdate();
+            return new MessageResponse("Course started successfully!");
+        }
+
+        throw new Exception("Cannot start course! Already finished!");
+    }
+
+    @Override
+    public MessageResponse bookmarkCourse(int userId, StartBookmarkPayload p) {
+        Query query = entityManager.createNativeQuery("INSERT INTO bookmark (user_id, course_id) VALUES (:userId, :courseId)");
+        query.setParameter("userId", userId);
+        query.setParameter("courseId", p.getCourseId());
+        query.executeUpdate();
+
+        return new MessageResponse("Course bookmarked successfully!");
     }
 }

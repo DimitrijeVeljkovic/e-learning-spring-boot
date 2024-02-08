@@ -1,11 +1,7 @@
 package com.dveljkovic.elearning.dao;
 
-import com.dveljkovic.elearning.entity.Comment;
-import com.dveljkovic.elearning.entity.Course;
-import com.dveljkovic.elearning.entity.Rating;
-import com.dveljkovic.elearning.helpers.CommentPayload;
-import com.dveljkovic.elearning.helpers.Counts;
-import com.dveljkovic.elearning.helpers.RatingPayload;
+import com.dveljkovic.elearning.entity.*;
+import com.dveljkovic.elearning.helpers.*;
 
 import java.util.List;
 
@@ -19,4 +15,14 @@ public interface CourseDAO {
     Rating postRating(int courseId, RatingPayload rating);
 
     Rating getUserRatingForCourse(int courseId, Long userId);
+
+    List<Bookmark> getAllBookmarks(int userId);
+
+    List<InProgress> getAllInProgress(int userId);
+
+    List<Completed> getAllCompleted(int userId);
+
+    MessageResponse startCourse(int userId, StartBookmarkPayload p) throws Exception;
+
+    MessageResponse bookmarkCourse(int userId, StartBookmarkPayload p);
 }

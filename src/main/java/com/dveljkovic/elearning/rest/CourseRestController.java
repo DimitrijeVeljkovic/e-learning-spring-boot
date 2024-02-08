@@ -1,12 +1,8 @@
 package com.dveljkovic.elearning.rest;
 
 import com.dveljkovic.elearning.auth.JwtTokenProvider;
-import com.dveljkovic.elearning.entity.Comment;
-import com.dveljkovic.elearning.entity.Course;
-import com.dveljkovic.elearning.entity.Rating;
-import com.dveljkovic.elearning.helpers.CommentPayload;
-import com.dveljkovic.elearning.helpers.Counts;
-import com.dveljkovic.elearning.helpers.RatingPayload;
+import com.dveljkovic.elearning.entity.*;
+import com.dveljkovic.elearning.helpers.*;
 import com.dveljkovic.elearning.service.CourseService;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +33,66 @@ public class CourseRestController {
         } else {
             return courseService.getNumberOfCourses();
         }
+    }
+
+    @GetMapping("/bookmark")
+    public List<Bookmark> getAllBookmarks(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(name = "userId") int userId
+    ) throws AuthenticationException {
+        if (JwtTokenProvider.isTokenValid(token)) {
+            return courseService.getAllBookmarks(userId);
+        }
+
+        throw new AuthenticationException("Auth failed! Token required!");
+    }
+
+    @GetMapping("/in-progress")
+    public List<InProgress> getAllInProgress(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(name = "userId") int userId
+    ) throws AuthenticationException {
+        if (JwtTokenProvider.isTokenValid(token)) {
+            return courseService.getAllInProgress(userId);
+        }
+
+        throw new AuthenticationException("Auth failed! Token required!");
+    }
+
+    @GetMapping("/finish")
+    public List<Completed> getAllCompleted(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(name = "userId") int userId
+    ) throws AuthenticationException {
+        if (JwtTokenProvider.isTokenValid(token)) {
+            return courseService.getAllCompleted(userId);
+        }
+
+        throw new AuthenticationException("Auth failed! Token required!");
+    }
+
+    @PostMapping("/in-progress")
+    public MessageResponse startCourse(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(name = "userId") int userId,
+            @RequestBody StartBookmarkPayload p) throws Exception {
+        if (JwtTokenProvider.isTokenValid(token)) {
+            return courseService.startCourse(userId, p);
+        }
+
+        throw new AuthenticationException("Auth failed! Token required!");
+    }
+
+    @PostMapping("/bookmark")
+    public MessageResponse bookmarkCourse(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(name = "userId") int userId,
+            @RequestBody StartBookmarkPayload p) throws AuthenticationException {
+        if (JwtTokenProvider.isTokenValid(token)) {
+            return courseService.bookmarkCourse(userId, p);
+        }
+
+        throw new AuthenticationException("Auth failed! Token required!");
     }
 
     @PostMapping("/{courseId}/comment")
