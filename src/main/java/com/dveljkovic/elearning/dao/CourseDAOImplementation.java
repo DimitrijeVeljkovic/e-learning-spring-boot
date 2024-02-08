@@ -9,6 +9,7 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -167,5 +168,47 @@ public class CourseDAOImplementation implements CourseDAO {
         query.executeUpdate();
 
         return new MessageResponse("Course bookmarked successfully!");
+    }
+
+    @Override
+    public MessageResponse submitTest(int userId, int courseId, List<QuestionAnswer> body) throws Exception {
+        int correctAnswers = 0;
+        TypedQuery<Question> query = entityManager.createQuery("SELECT q FROM Question q WHERE q.course.courseId = :courseId", Question.class);
+        query.setParameter("courseId", courseId);
+        List<Question> questions = query.getResultList();
+
+        for (Question q: questions) {
+            for (QuestionAnswer qa: body) {
+                if (q.getQuestionId() == qa.getQuestionId() && q.getAnswer().equals(qa.getAnswer())) {
+                    correctAnswers++;
+                }
+            }
+        }
+
+        double percentage = ((double) correctAnswers / questions.size()) * 100;
+        if (percentage >= 60) {
+            Query insertIntoCompleted = entityManager.createNativeQuery(
+                    "INSERT INTO completed (user_id, course_id, date, percentage) VALUES (:userId, :courseId, :date, :percentage)"
+            );
+            insertIntoCompleted.setParameter("userId", userId);
+            insertIntoCompleted.setParameter("courseId", courseId);
+            insertIntoCompleted.setParameter("date", new Date().toString());
+            insertIntoCompleted.setParameter("percentage", percentage);
+            insertIntoCompleted.executeUpdate();
+
+            TypedQuery<InProgress> getInProgress = entityManager.createQuery(
+                    "SELECT ip FROM InProgress ip WHERE ip.user.userId = :userId AND ip.course.courseId = :courseId",
+                    InProgress.class
+            );
+            getInProgress.setParameter("userId", userId);
+            getInProgress.setParameter("courseId", courseId);
+            InProgress inProgressToDelete = getInProgress.getSingleResult();
+            entityManager.remove(inProgressToDelete);
+
+
+            return new MessageResponse("Test passed successfully! Percentage: " + String.format("%.2f", percentage) + "%");
+        }
+
+        throw new Exception("Test is not passed! Try again! Percentage: " + String.format("%.2f", percentage) + "%");
     }
 }

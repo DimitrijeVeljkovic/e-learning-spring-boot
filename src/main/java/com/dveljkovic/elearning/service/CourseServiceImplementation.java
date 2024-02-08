@@ -75,4 +75,10 @@ public class CourseServiceImplementation implements CourseService {
     public MessageResponse bookmarkCourse(int userId, StartBookmarkPayload p) {
         return courseDAO.bookmarkCourse(userId, p);
     }
+
+    @Transactional
+    @Override
+    public MessageResponse submitTest(int userId, int courseId, List<QuestionAnswer> body) throws Exception {
+        return courseDAO.submitTest(userId, courseId, body);
+    }
 }

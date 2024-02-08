@@ -133,4 +133,18 @@ public class CourseRestController {
 
         throw new AuthenticationException("Auth failed! Token required!");
     }
+
+    @PostMapping("/submit/{courseId}")
+    public MessageResponse submitTest(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(name = "userId") int userId,
+            @PathVariable int courseId,
+            @RequestBody List<QuestionAnswer> body
+    ) throws Exception {
+        if (JwtTokenProvider.isTokenValid(token)) {
+            return courseService.submitTest(userId, courseId, body);
+        }
+
+        throw new AuthenticationException("Auth failed! Token required!");
+    }
 }

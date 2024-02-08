@@ -8,8 +8,6 @@ import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin(origins = "*", methods = {
@@ -65,20 +63,6 @@ public class UserRestController {
     ) throws AuthenticationException {
         if (JwtTokenProvider.isTokenValid(token)) {
             return userService.deleteUser(userId);
-        }
-
-        throw new AuthenticationException("Auth failed! Token required!");
-    }
-
-    @PostMapping("/{userId}/submit-test/{courseId}")
-    public MessageResponse submitTest(
-            @RequestHeader("Authorization") String token,
-            @PathVariable int userId,
-            @PathVariable int courseId,
-            @RequestBody List<QuestionAnswer> body
-    ) throws Exception {
-        if (JwtTokenProvider.isTokenValid(token)) {
-            return userService.submitTest(userId, courseId, body);
         }
 
         throw new AuthenticationException("Auth failed! Token required!");

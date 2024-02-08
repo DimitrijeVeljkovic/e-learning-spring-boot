@@ -22,6 +22,8 @@ public interface CourseService {
 
     List<Completed> getAllCompleted(int userId);
 
+    MessageResponse submitTest(int userId, int courseId, List<QuestionAnswer> body) throws Exception;
+
     MessageResponse startCourse(int userId, StartBookmarkPayload p) throws Exception;
 
     MessageResponse bookmarkCourse(int userId, StartBookmarkPayload p);

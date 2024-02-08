@@ -25,4 +25,6 @@ public interface CourseDAO {
     MessageResponse startCourse(int userId, StartBookmarkPayload p) throws Exception;
 
     MessageResponse bookmarkCourse(int userId, StartBookmarkPayload p);
+
+    MessageResponse submitTest(int userId, int courseId, List<QuestionAnswer> body) throws Exception;
 }

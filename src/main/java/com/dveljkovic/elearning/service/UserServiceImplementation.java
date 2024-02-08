@@ -8,8 +8,6 @@ import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserServiceImplementation implements UserService {
 
@@ -46,11 +44,5 @@ public class UserServiceImplementation implements UserService {
     @Override
     public MessageResponse deleteUser(int userId) {
         return userDAO.deleteUser(userId);
-    }
-
-    @Transactional
-    @Override
-    public MessageResponse submitTest(int userId, int courseId, List<QuestionAnswer> body) throws Exception {
-        return userDAO.submitTest(userId, courseId, body);
     }
 }
