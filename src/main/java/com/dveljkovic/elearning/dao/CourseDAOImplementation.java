@@ -58,21 +58,6 @@ public class CourseDAOImplementation implements CourseDAO {
     }
 
     @Override
-    public Comment postComment(int courseId, CommentPayload comment) {
-        Query query = entityManager.createNativeQuery("INSERT INTO comment (user_id, course_id, comment) VALUES (:userId, :courseId, :comment)");
-        query.setParameter("userId", comment.getUserId());
-        query.setParameter("courseId", courseId);
-        query.setParameter("comment", comment.getComment());
-        query.executeUpdate();
-
-        User u = entityManager.find(User.class, comment.getUserId());
-        Comment c = new Comment(comment.getComment());
-        c.setUser(u);
-
-        return c;
-    }
-
-    @Override
     public Rating postRating(int courseId, RatingPayload rating) {
         int userRating = getUserRatingForCourse(courseId, (long) rating.getUserId()).getRating();
 

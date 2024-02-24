@@ -10,8 +10,6 @@ public interface CourseService {
     Counts getNumberOfCourses();
     Counts getNumberOfCoursesForUser(Long userId);
 
-    Comment postComment(int courseId, CommentPayload comment);
-
     Rating postRating(int courseId, RatingPayload rating);
 
     Rating getUserRatingForCourse(int courseId, Long userId);

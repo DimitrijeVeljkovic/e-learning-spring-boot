@@ -32,11 +32,6 @@ public class CourseServiceImplementation implements CourseService {
         return courseDAO.getNumberOfCoursesForUser(userId);
     }
 
-    @Transactional
-    @Override
-    public Comment postComment(int courseId, CommentPayload comment) {
-        return courseDAO.postComment(courseId, comment);
-    }
 
     @Transactional
     @Override
