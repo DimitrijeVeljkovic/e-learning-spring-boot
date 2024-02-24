@@ -20,7 +20,7 @@ public class UserServiceImplementation implements UserService {
 
     @Transactional
     @Override
-    public SignupResponse createUser(User user) {
+    public SignupResponse createUser(UserDataPayload user) {
         return userDAO.createUser(user);
     }
 
@@ -36,7 +36,7 @@ public class UserServiceImplementation implements UserService {
 
     @Transactional
     @Override
-    public UpdateUserResponse changeUserData(int userId, User user) {
+    public UpdateUserResponse changeUserData(int userId, UserDataPayload user) {
         return userDAO.changeUserData(userId, user);
     }
 

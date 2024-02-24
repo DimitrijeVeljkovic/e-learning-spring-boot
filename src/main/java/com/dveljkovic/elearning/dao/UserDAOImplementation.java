@@ -20,8 +20,15 @@ public class UserDAOImplementation implements UserDAO {
         entityManager = em;
     }
     @Override
-    public SignupResponse createUser(User user) {
-        User u = entityManager.merge(user);
+    public SignupResponse createUser(UserDataPayload user) {
+        User newUser = new User(
+                user.getFirstName(),
+                user.getLastName(),
+                user.getUserName(),
+                user.getEmail(),
+                user.getPassword()
+        );
+        User u = entityManager.merge(newUser);
         return new SignupResponse("User created successfully!", u);
     }
 
@@ -48,7 +55,7 @@ public class UserDAOImplementation implements UserDAO {
     }
 
     @Override
-    public UpdateUserResponse changeUserData(int userId, User user) {
+    public UpdateUserResponse changeUserData(int userId, UserDataPayload user) {
         User existingUser = entityManager.find(User.class, userId);
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
@@ -61,7 +68,7 @@ public class UserDAOImplementation implements UserDAO {
         existingUser.setComments(existingUser.getComments());
         entityManager.merge(existingUser);
 
-        return new UpdateUserResponse("Data changed successfully!", user);
+        return new UpdateUserResponse("Data changed successfully!", existingUser);
     }
 
     @Override

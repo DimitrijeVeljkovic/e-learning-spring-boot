@@ -26,7 +26,7 @@ public class UserRestController {
     }
 
     @PostMapping("/signup")
-    public SignupResponse createUser(@RequestBody User user) {
+    public SignupResponse createUser(@RequestBody UserDataPayload user) {
         return userService.createUser(user);
     }
 
@@ -36,7 +36,10 @@ public class UserRestController {
     }
 
     @GetMapping("/{userId}")
-    public User getUser(@RequestHeader("Authorization") String token, @PathVariable int userId) throws AuthenticationException {
+    public User getUser(
+            @RequestHeader("Authorization") String token,
+            @PathVariable int userId
+    ) throws AuthenticationException {
         if (JwtTokenProvider.isTokenValid(token)) {
             return userService.getUser(userId);
         }
@@ -48,7 +51,8 @@ public class UserRestController {
     public UpdateUserResponse changeUserData(
             @RequestHeader("Authorization") String token,
             @PathVariable int userId,
-            @RequestBody User user) throws AuthenticationException {
+            @RequestBody UserDataPayload user
+    ) throws AuthenticationException {
         if (JwtTokenProvider.isTokenValid(token)) {
             return userService.changeUserData(userId, user);
         }
