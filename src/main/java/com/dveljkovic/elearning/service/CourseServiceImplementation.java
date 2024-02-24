@@ -32,18 +32,6 @@ public class CourseServiceImplementation implements CourseService {
         return courseDAO.getNumberOfCoursesForUser(userId);
     }
 
-
-    @Transactional
-    @Override
-    public Rating postRating(int courseId, RatingPayload rating) {
-        return courseDAO.postRating(courseId, rating);
-    }
-
-    @Override
-    public Rating getUserRatingForCourse(int courseId, Long userId) {
-        return courseDAO.getUserRatingForCourse(courseId, userId);
-    }
-
     @Override
     public List<Bookmark> getAllBookmarks(int userId) {
         return courseDAO.getAllBookmarks(userId);

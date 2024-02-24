@@ -10,10 +10,6 @@ public interface CourseDAO {
     Counts getNumberOfCourses();
     Counts getNumberOfCoursesForUser(Long userId);
 
-    Rating postRating(int courseId, RatingPayload rating);
-
-    Rating getUserRatingForCourse(int courseId, Long userId);
-
     List<Bookmark> getAllBookmarks(int userId);
 
     List<InProgress> getAllInProgress(int userId);

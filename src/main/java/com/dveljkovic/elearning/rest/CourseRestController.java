@@ -108,32 +108,6 @@ public class CourseRestController {
         throw new AuthenticationException("Auth failed! Token required!");
     }
 
-    @PostMapping("/{courseId}/rating")
-    public Rating postRating(
-            @RequestHeader("Authorization") String token,
-            @PathVariable int courseId,
-            @RequestBody RatingPayload rating
-    ) throws AuthenticationException {
-        if (JwtTokenProvider.isTokenValid(token)) {
-            return courseService.postRating(courseId, rating);
-        }
-
-        throw new AuthenticationException("Auth failed! Token required!");
-    }
-
-    @GetMapping("/{courseId}/rating")
-    public Rating ratingForUser(
-            @RequestHeader("Authorization") String token,
-            @PathVariable int courseId,
-            @RequestParam(name = "userId") Long userId
-    ) throws AuthenticationException {
-        if (JwtTokenProvider.isTokenValid(token)) {
-            return courseService.getUserRatingForCourse(courseId, userId);
-        }
-
-        throw new AuthenticationException("Auth failed! Token required!");
-    }
-
     @PostMapping("/submit/{courseId}")
     public MessageResponse submitTest(
             @RequestHeader("Authorization") String token,
