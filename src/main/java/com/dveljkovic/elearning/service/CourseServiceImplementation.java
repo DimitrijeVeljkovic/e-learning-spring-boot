@@ -71,6 +71,11 @@ public class CourseServiceImplementation implements CourseService {
         return courseDAO.bookmarkCourse(userId, p);
     }
 
+    @Override
+    public InProgress getSingleInProgress(int userId, int courseId) {
+        return courseDAO.getSingleInProgress(userId, courseId);
+    }
+
     @Transactional
     @Override
     public MessageResponse submitTest(int userId, int courseId, List<QuestionAnswer> body) throws Exception {

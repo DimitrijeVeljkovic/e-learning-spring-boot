@@ -25,4 +25,6 @@ public interface CourseService {
     MessageResponse startCourse(int userId, StartBookmarkPayload p) throws Exception;
 
     MessageResponse bookmarkCourse(int userId, StartBookmarkPayload p);
+
+    InProgress getSingleInProgress(int userId, int courseId);
 }

@@ -59,6 +59,19 @@ public class CourseRestController {
         throw new AuthenticationException("Auth failed! Token required!");
     }
 
+    @GetMapping("/in-progress/{courseId}")
+    public InProgress getSingleInProgress(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(name = "userId") int userId,
+            @PathVariable int courseId
+    ) throws AuthenticationException {
+        if (JwtTokenProvider.isTokenValid(token)) {
+            return courseService.getSingleInProgress(userId, courseId);
+        }
+
+        throw new AuthenticationException("Auth failed! Token required!");
+    }
+
     @GetMapping("/finish")
     public List<Completed> getAllCompleted(
             @RequestHeader("Authorization") String token,

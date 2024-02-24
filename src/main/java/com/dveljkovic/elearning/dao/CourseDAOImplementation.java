@@ -196,4 +196,16 @@ public class CourseDAOImplementation implements CourseDAO {
 
         throw new Exception("Test is not passed! Try again! Percentage: " + String.format("%.2f", percentage) + "%");
     }
+
+    @Override
+    public InProgress getSingleInProgress(int userId, int courseId) {
+        TypedQuery<InProgress> query = entityManager.createQuery(
+                "SELECT i FROM InProgress i WHERE i.user.userId = :userId AND i.course.courseId = :courseId",
+                InProgress.class
+        );
+        query.setParameter("userId", userId);
+        query.setParameter("courseId", courseId);
+
+        return query.getSingleResult();
+    }
 }

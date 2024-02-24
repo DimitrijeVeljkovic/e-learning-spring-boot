@@ -25,4 +25,6 @@ public interface CourseDAO {
     MessageResponse bookmarkCourse(int userId, StartBookmarkPayload p);
 
     MessageResponse submitTest(int userId, int courseId, List<QuestionAnswer> body) throws Exception;
+
+    InProgress getSingleInProgress(int userId, int courseId);
 }
