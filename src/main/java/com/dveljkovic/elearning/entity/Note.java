@@ -27,8 +27,7 @@ public class Note {
 
     }
 
-    public Note(int noteId, String note) {
-        this.noteId = noteId;
+    public Note(String note) {
         this.note = note;
     }
 

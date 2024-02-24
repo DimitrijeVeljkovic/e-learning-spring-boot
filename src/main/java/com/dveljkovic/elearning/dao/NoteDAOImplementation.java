@@ -1,12 +1,13 @@
 package com.dveljkovic.elearning.dao;
 
+import com.dveljkovic.elearning.entity.Course;
+import com.dveljkovic.elearning.entity.InProgress;
 import com.dveljkovic.elearning.entity.Note;
+import com.dveljkovic.elearning.entity.User;
 import com.dveljkovic.elearning.helpers.MessageResponse;
 import com.dveljkovic.elearning.helpers.NotePayload;
 import com.dveljkovic.elearning.helpers.NoteResponse;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,21 +22,16 @@ public class NoteDAOImplementation implements NoteDAO {
 
     @Override
     public NoteResponse addNoteForUser(int userId, int courseId, NotePayload note) {
-        Query insertQuery = entityManager.createNativeQuery("INSERT INTO note (note, course_id, user_id) VALUES (:note, :courseId, :userId)");
-        insertQuery.setParameter("note", note.getNewNote());
-        insertQuery.setParameter("courseId", courseId);
-        insertQuery.setParameter("userId", userId);
-        insertQuery.executeUpdate();
+        User user = entityManager.find(User.class, userId);
+        Course course = entityManager.find(Course.class, courseId);
+        InProgress ip = new InProgress(user, course);
+        InProgress inProgress = entityManager.find(InProgress.class, ip);
+        Note newNote = new Note(note.getNewNote());
 
-        TypedQuery<Note> selectQuery = entityManager.createQuery(
-                "SELECT n FROM Note n " +
-                "WHERE n.note = :note " +
-                "ORDER BY n.noteId DESC " +
-                "LIMIT 1",
-                Note.class
-        );
-        selectQuery.setParameter("note", note.getNewNote());
-        Note n = selectQuery.getSingleResult();
+        newNote.setInProgress(inProgress);
+
+        Note n = entityManager.merge(newNote);
+
 
         return new NoteResponse("Note added successfully!", n);
     }
