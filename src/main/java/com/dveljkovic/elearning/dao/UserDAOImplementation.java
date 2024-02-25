@@ -42,6 +42,10 @@ public class UserDAOImplementation implements UserDAO {
                 .getSingleResult();
 
         if (u != null && Objects.equals(u.getPassword(), login.getPassword())) {
+            if (!u.getVerificationCode().isEmpty()) {
+                throw new AuthenticationException("Auth failed! Account is not verified!");
+            }
+
             String token = JwtTokenProvider.generateToken(u.getEmail(), u.getUserId());
 
             return new LoginResponse(token, u);
