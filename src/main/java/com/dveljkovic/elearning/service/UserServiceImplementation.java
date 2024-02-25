@@ -20,8 +20,8 @@ public class UserServiceImplementation implements UserService {
 
     @Transactional
     @Override
-    public SignupResponse createUser(UserDataPayload user) {
-        return userDAO.createUser(user);
+    public SignupResponse createUser(UserDataPayload user, String verificationCode) {
+        return userDAO.createUser(user, verificationCode);
     }
 
     @Override
@@ -44,5 +44,11 @@ public class UserServiceImplementation implements UserService {
     @Override
     public MessageResponse deleteUser(int userId) {
         return userDAO.deleteUser(userId);
+    }
+
+    @Transactional
+    @Override
+    public MessageResponse verifyUser(VerifyPayload vp) throws Exception {
+        return userDAO.verifyUser(vp);
     }
 }

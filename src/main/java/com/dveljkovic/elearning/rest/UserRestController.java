@@ -3,10 +3,13 @@ package com.dveljkovic.elearning.rest;
 import com.dveljkovic.elearning.auth.JwtTokenProvider;
 import com.dveljkovic.elearning.entity.*;
 import com.dveljkovic.elearning.helpers.*;
+import com.dveljkovic.elearning.service.EmailService;
 import com.dveljkovic.elearning.service.UserService;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/user")
@@ -19,20 +22,36 @@ import org.springframework.web.bind.annotation.*;
 public class UserRestController {
 
     private UserService userService;
+    private EmailService emailService;
 
     @Autowired
-    public UserRestController(UserService us) {
+    public UserRestController(UserService us, EmailService es) {
         userService = us;
+        emailService = es;
     }
 
     @PostMapping("/signup")
     public SignupResponse createUser(@RequestBody UserDataPayload user) {
-        return userService.createUser(user);
+        String verificationCode = UUID.randomUUID().toString().substring(0,6).toUpperCase();
+        SignupResponse response = userService.createUser(user, verificationCode);
+        User u = response.getResult();
+        emailService.sendEmail(u.getEmail(), "Verification code for NJTeLearning", verificationCode);
+        return response;
+    }
+
+    @DeleteMapping("/signup/{userId}")
+    public MessageResponse deleteUserOnSignUp(@PathVariable int userId) {
+        return userService.deleteUser(userId);
     }
 
     @PostMapping("/login")
     public LoginResponse findUser(@RequestBody LoginPayload login) throws AuthenticationException {
         return userService.findUser(login);
+    }
+
+    @PostMapping("/verify")
+    public MessageResponse verifyUser(@RequestBody VerifyPayload vp) throws Exception {
+        return userService.verifyUser(vp);
     }
 
     @GetMapping("/{userId}")

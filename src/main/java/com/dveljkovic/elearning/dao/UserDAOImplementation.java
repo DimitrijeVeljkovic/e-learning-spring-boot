@@ -20,7 +20,7 @@ public class UserDAOImplementation implements UserDAO {
         entityManager = em;
     }
     @Override
-    public SignupResponse createUser(UserDataPayload user) {
+    public SignupResponse createUser(UserDataPayload user, String verificationCode) {
         User newUser = new User(
                 user.getFirstName(),
                 user.getLastName(),
@@ -28,6 +28,7 @@ public class UserDAOImplementation implements UserDAO {
                 user.getEmail(),
                 user.getPassword()
         );
+        newUser.setVerificationCode(verificationCode);
         User u = entityManager.merge(newUser);
         return new SignupResponse("User created successfully!", u);
     }
@@ -59,7 +60,6 @@ public class UserDAOImplementation implements UserDAO {
         User existingUser = entityManager.find(User.class, userId);
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
-        existingUser.setEmail(user.getEmail());
         existingUser.setPassword(user.getPassword());
         existingUser.setUserName(user.getUserName());
         existingUser.setBookmarks(existingUser.getBookmarks());
@@ -76,5 +76,19 @@ public class UserDAOImplementation implements UserDAO {
         User u = entityManager.find(User.class, userId);
         entityManager.remove(u);
         return new MessageResponse("User deleted successfully!");
+    }
+
+    @Override
+    public MessageResponse verifyUser(VerifyPayload vp) throws Exception {
+        User u = entityManager.find(User.class, vp.getUserId());
+
+        if (vp.getVerificationCode().equals(u.getVerificationCode())) {
+            u.setVerificationCode("");
+            entityManager.merge(u);
+
+            return new MessageResponse("User verified and successfully created!");
+        }
+
+        throw new Exception("Verification code is not correct. Please try again!");
     }
 }

@@ -5,7 +5,7 @@ import com.dveljkovic.elearning.helpers.*;
 import org.apache.tomcat.websocket.AuthenticationException;
 
 public interface UserDAO {
-    SignupResponse createUser(UserDataPayload user);
+    SignupResponse createUser(UserDataPayload user, String verificationCode);
 
     LoginResponse findUser(LoginPayload login) throws AuthenticationException;
 
@@ -14,4 +14,6 @@ public interface UserDAO {
     UpdateUserResponse changeUserData(int userId, UserDataPayload user);
 
     MessageResponse deleteUser(int userId);
+
+    MessageResponse verifyUser(VerifyPayload vp) throws Exception;
 }

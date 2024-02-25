@@ -28,6 +28,10 @@ public class User {
     @Column(name="password")
     private String password;
 
+    @Column(name="verification_code")
+    @JsonIgnore
+    private String verificationCode;
+
     @OneToMany(mappedBy = "user", cascade = { CascadeType.ALL }, orphanRemoval = true)
     @JsonIgnore
     private List<Comment> comments;
@@ -102,6 +106,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 
     public List<Comment> getComments() {
