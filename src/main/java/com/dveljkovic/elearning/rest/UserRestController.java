@@ -39,11 +39,6 @@ public class UserRestController {
         return response;
     }
 
-    @DeleteMapping("/signup/{userId}")
-    public MessageResponse deleteUserOnSignUp(@PathVariable int userId) {
-        return userService.deleteUser(userId);
-    }
-
     @PostMapping("/login")
     public LoginResponse findUser(@RequestBody LoginPayload login) throws AuthenticationException {
         return userService.findUser(login);
