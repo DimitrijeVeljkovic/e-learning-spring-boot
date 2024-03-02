@@ -6,6 +6,7 @@ import com.dveljkovic.elearning.helpers.*;
 import jakarta.persistence.EntityManager;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.Objects;
@@ -14,10 +15,12 @@ import java.util.Objects;
 public class UserDAOImplementation implements UserDAO {
 
     private EntityManager entityManager;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public UserDAOImplementation(EntityManager em) {
         entityManager = em;
+        passwordEncoder = new BCryptPasswordEncoder();
     }
     @Override
     public SignupResponse createUser(UserDataPayload user, String verificationCode) {
@@ -26,7 +29,7 @@ public class UserDAOImplementation implements UserDAO {
                 user.getLastName(),
                 user.getUserName(),
                 user.getEmail(),
-                user.getPassword()
+                passwordEncoder.encode(user.getPassword())
         );
         newUser.setVerificationCode(verificationCode);
         User u = entityManager.merge(newUser);
@@ -41,7 +44,7 @@ public class UserDAOImplementation implements UserDAO {
                 .setParameter("email", email)
                 .getSingleResult();
 
-        if (u != null && Objects.equals(u.getPassword(), login.getPassword())) {
+        if (u != null && passwordEncoder.matches(login.getPassword(), u.getPassword())) {
             if (!u.getVerificationCode().isEmpty()) {
                 throw new AuthenticationException("Auth failed! Account is not verified!");
             }
