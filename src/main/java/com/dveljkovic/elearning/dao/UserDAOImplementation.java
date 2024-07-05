@@ -59,7 +59,9 @@ public class UserDAOImplementation implements UserDAO {
 
     @Override
     public User getUser(int userId) {
-        return entityManager.find(User.class, userId);
+        User u = entityManager.find(User.class, userId);
+        u.setPassword("");
+        return u;
     }
 
     @Override
@@ -67,12 +69,16 @@ public class UserDAOImplementation implements UserDAO {
         User existingUser = entityManager.find(User.class, userId);
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
-        existingUser.setPassword(user.getPassword());
         existingUser.setUserName(user.getUserName());
         existingUser.setBookmarks(existingUser.getBookmarks());
         existingUser.setInProgressCourses(existingUser.getInProgressCourses());
         existingUser.setCompletedCourses(existingUser.getCompletedCourses());
         existingUser.setComments(existingUser.getComments());
+
+        if (!user.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
         entityManager.merge(existingUser);
 
         return new UpdateUserResponse("Data changed successfully!", existingUser);
